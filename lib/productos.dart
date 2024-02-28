@@ -86,6 +86,7 @@ class _OtroState extends State<Otro> {
           ),
         ],
         currentIndex: _selectedIndex,
+
         selectedItemColor: Colors.blue,
         type: BottomNavigationBarType.fixed,
         onTap: (index) {
