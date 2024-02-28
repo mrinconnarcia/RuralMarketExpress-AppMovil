@@ -57,7 +57,6 @@ class _OtroState extends State<Otro> {
                   style: TextButton.styleFrom(
                     backgroundColor: Color.fromARGB(255, 216, 214, 103), // Color del AppBar
                   ),
-
                   child: const Text('AGREGAR', style: TextStyle(color: Colors.black)),
                   onPressed: () {},
                 ),
@@ -79,7 +78,7 @@ class _OtroState extends State<Otro> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.shopping_cart),
-            label: 'compras',
+            label: 'Compras',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
@@ -93,6 +92,15 @@ class _OtroState extends State<Otro> {
           setState(() {
             _selectedIndex = index;
           });
+          // Agregar la navegación aquí según el índice seleccionado
+          if (index == 2) { // Índice correspondiente al ícono de compras
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Nueva(),
+              ),
+            );
+          }
         },
       ),
     );
