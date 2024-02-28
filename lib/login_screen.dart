@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movil_project/home_page.dart';
+import 'package:movil_project/productos.dart';
 import 'package:movil_project/signup_screen.dart';
 
 class LoginPage extends StatefulWidget {
@@ -99,8 +100,7 @@ class _LoginPageState extends State<LoginPage> {
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const MyHomePage(
-                                      title: 'RuralMarketExpress')),
+                                  builder: (context) => Otro()),
                             );
                           }
                         },

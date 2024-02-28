@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movil_project/carrito.dart';
 
 class Otro extends StatefulWidget {
   @override
@@ -19,7 +20,11 @@ class _OtroState extends State<Otro> {
             padding: EdgeInsets.only(right: 20.0),
             child: GestureDetector(
               onTap: () {
-
+                // Navegar a la pantalla del carrito de compras al presionar el ícono
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Nueva()),
+                );
               },
               child: Icon(
                 Icons.shopping_cart,
