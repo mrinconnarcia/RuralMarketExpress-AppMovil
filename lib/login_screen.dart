@@ -41,9 +41,9 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 20.0),
               const Center(
                   child: Text(
-                "Enter your email and password to log in.",
-                style: TextStyle(fontSize: 16.0),
-              )),
+                    "Enter your email and password to log in.",
+                    style: TextStyle(fontSize: 16.0),
+                  )),
               const SizedBox(height: 40.0),
               Form(
                 key: _formKey,
@@ -60,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
                           return "The e-mail address is required";
                         }
                         if (!RegExp(
-                                r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$")
+                            r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$")
                             .hasMatch(value)) {
                           return "Invalid e-mail address";
                         }
@@ -110,10 +110,10 @@ class _LoginPageState extends State<LoginPage> {
                             Size.fromWidth(350.0), // Ajusta el ancho aquí
                           ),
                           backgroundColor:
-                              MaterialStateProperty.all(Colors.yellow.shade400),
+                          MaterialStateProperty.all(Colors.yellow.shade400),
                           foregroundColor:
-                              MaterialStateProperty.resolveWith<Color>(
-                            (Set<MaterialState> states) {
+                          MaterialStateProperty.resolveWith<Color>(
+                                (Set<MaterialState> states) {
                               if (states.contains(MaterialState.pressed)) {
                                 return Colors
                                     .black; // Color del texto cuando el botón está presionado
@@ -146,9 +146,9 @@ class _LoginPageState extends State<LoginPage> {
                     child: const Text("Sign Up"),
                     style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all(Colors.white),
+                      MaterialStateProperty.all(Colors.white),
                       foregroundColor: MaterialStateProperty.resolveWith<Color>(
-                        (Set<MaterialState> states) {
+                            (Set<MaterialState> states) {
                           if (states.contains(MaterialState.pressed)) {
                             return Colors
                                 .green; // Color del texto cuando el botón está presionado

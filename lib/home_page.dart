@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:movil_project/productos.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -133,9 +134,18 @@ class _MyHomePageState extends State<MyHomePage> {
                             SizedBox(
                               height: 100.0,
                               width: 100.0,
-                              child: Image.asset(
-                                'assets/vegetables.jpg',
-                                fit: BoxFit.cover,
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>  Otro()),
+                                  );// Aquí puedes agregar la lógica para navegar a la página deseada
+                                },
+                                child: Image.asset(
+                                  'assets/vegetables.jpg',
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
                           ],

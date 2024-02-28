@@ -21,7 +21,7 @@ class _LoginPageState extends State<SignupPage> {
       body: SingleChildScrollView(
         child: Padding(
           padding:
-              const EdgeInsets.symmetric(horizontal: 16.0, vertical: 100.0),
+          const EdgeInsets.symmetric(horizontal: 16.0, vertical: 100.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,9 +42,9 @@ class _LoginPageState extends State<SignupPage> {
               const SizedBox(height: 20.0),
               const Center(
                   child: Text(
-                "Enter your data to register.",
-                style: TextStyle(fontSize: 16.0),
-              )),
+                    "Enter your data to register.",
+                    style: TextStyle(fontSize: 16.0),
+                  )),
               const SizedBox(height: 40.0),
               Form(
                 key: _formKey,
@@ -75,7 +75,7 @@ class _LoginPageState extends State<SignupPage> {
                           return "The e-mail address is required";
                         }
                         if (!RegExp(
-                                r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$")
+                            r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$")
                             .hasMatch(value)) {
                           return "Invalid e-mail address";
                         }
@@ -124,10 +124,10 @@ class _LoginPageState extends State<SignupPage> {
                             Size.fromWidth(350.0), // Ajusta el ancho aquí
                           ),
                           backgroundColor:
-                              MaterialStateProperty.all(Colors.yellow.shade400),
+                          MaterialStateProperty.all(Colors.yellow.shade400),
                           foregroundColor:
-                              MaterialStateProperty.resolveWith<Color>(
-                            (Set<MaterialState> states) {
+                          MaterialStateProperty.resolveWith<Color>(
+                                (Set<MaterialState> states) {
                               if (states.contains(MaterialState.pressed)) {
                                 return Colors
                                     .black; // Color del texto cuando el botón está presionado
@@ -161,7 +161,7 @@ class _LoginPageState extends State<SignupPage> {
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.white),
                       foregroundColor: MaterialStateProperty.resolveWith<Color>(
-                        (Set<MaterialState> states) {
+                            (Set<MaterialState> states) {
                           if (states.contains(MaterialState.pressed)) {
                             return Colors
                                 .green; // Color del texto cuando el botón está presionado
