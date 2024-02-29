@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:movil_project/pages/favorite.dart';
+import 'package:movil_project/pages/home_page.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+
 
 class Nueva extends StatelessWidget {
   @override
@@ -8,7 +12,7 @@ class Nueva extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(),
+      home: Car(),
     );
   }
 }
@@ -22,12 +26,12 @@ class Product {
   Product({required this.name, required this.icon, required this.price, this.quantity = 1});
 }
 
-class MyHomePage extends StatefulWidget {
+class Car extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<Car> {
   List<Product> products = [
     Product(name: 'Producto 1', icon: Icons.shopping_bag, price: 10.0),
     Product(name: 'Producto 2', icon: Icons.shopping_bag, price: 20.0),
@@ -41,6 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    int _selectedIndex = 0;
     return Scaffold(
       appBar: AppBar(
         title: Text('Carrito de Compras'),
@@ -137,6 +142,55 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ],
+      ),
+      bottomNavigationBar: CurvedNavigationBar(
+        backgroundColor: Colors.transparent,
+        color: Colors.amber.shade300,
+        buttonBackgroundColor: Colors.amber.shade700,
+        items: <Widget>[
+          Icon(Icons.home, size: 30),
+          Icon(Icons.favorite, size: 30),
+          Icon(Icons.shopping_cart, size: 30),
+          Icon(Icons.person, size: 30),
+        ],
+        index: 2,
+        onTap: (index) {
+          switch (index) {
+            case 0:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        MyHomePage(title: 'RuralMarketExpress')),
+              );
+              break;
+            case 1:
+            // Navigate to your second page (replace with your actual widget)
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Favoritos()),
+              );
+              break;
+            case 2:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        Nueva()), // Assuming Carrito is your cart page
+              );
+              break;
+            case 3:
+            // Navigate to your fourth page (replace with your actual widget)
+            //   Navigator.push(
+            //     context,
+            //     MaterialPageRoute(builder: (context) => Otro()),
+            //   );
+              break;
+          }
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
       ),
     );
   }

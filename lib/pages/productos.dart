@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:movil_project/carrito.dart';
+import 'package:movil_project/pages/carrito.dart';
+import 'package:movil_project/pages/home_page.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 class Otro extends StatefulWidget {
   @override
@@ -55,9 +57,11 @@ class _OtroState extends State<Otro> {
                 Text('precioo ${index + 1}.'),
                 TextButton(
                   style: TextButton.styleFrom(
-                    backgroundColor: Color.fromARGB(255, 216, 214, 103), // Color del AppBar
+                    backgroundColor:
+                        Color.fromARGB(255, 216, 214, 103), // Color del AppBar
                   ),
-                  child: const Text('AGREGAR', style: TextStyle(color: Colors.black)),
+                  child: const Text('AGREGAR',
+                      style: TextStyle(color: Colors.black)),
                   onPressed: () {},
                 ),
               ],
@@ -65,43 +69,53 @@ class _OtroState extends State<Otro> {
           );
         }),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Color.fromARGB(255, 216, 214, 103),
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Inicio',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: 'Corazon',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
-            label: 'Compras',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Ajustes',
-          ),
+      bottomNavigationBar: CurvedNavigationBar(
+        backgroundColor: Colors.transparent,
+        color: Colors.amber.shade300,
+        buttonBackgroundColor: Colors.amber.shade700,
+        items: <Widget>[
+          Icon(Icons.home, size: 30),
+          Icon(Icons.favorite, size: 30),
+          Icon(Icons.shopping_cart, size: 30),
+          Icon(Icons.person, size: 30),
         ],
-        currentIndex: _selectedIndex,
-
-        selectedItemColor: Colors.blue,
-        type: BottomNavigationBarType.fixed,
+        index: 1,
         onTap: (index) {
+          switch (index) {
+            case 0:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        MyHomePage(title: 'RuralMarketExpress')),
+              );
+              break;
+            case 1:
+              // Navigate to your second page (replace with your actual widget)
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Otro()),
+              );
+              break;
+            case 2:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        Nueva()), // Assuming Carrito is your cart page
+              );
+              break;
+            case 3:
+              // Navigate to your fourth page (replace with your actual widget)
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Otro()),
+              );
+              break;
+          }
           setState(() {
             _selectedIndex = index;
           });
-          // Agregar la navegación aquí según el índice seleccionado
-          if (index == 2) { // Índice correspondiente al ícono de compras
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => Nueva(),
-              ),
-            );
-          }
         },
       ),
     );

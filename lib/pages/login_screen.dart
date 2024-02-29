@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:movil_project/login_screen.dart';
+import 'package:movil_project/pages/home_page.dart';
+import 'package:movil_project/pages/signup_screen.dart';
 
-class SignupPage extends StatefulWidget {
-  const SignupPage({Key? key}) : super(key: key);
+class LoginPage extends StatefulWidget {
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
-  State<SignupPage> createState() => _LoginPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<SignupPage> {
+class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -20,8 +20,7 @@ class _LoginPageState extends State<SignupPage> {
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Padding(
-          padding:
-          const EdgeInsets.symmetric(horizontal: 16.0, vertical: 100.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 100.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,7 +30,7 @@ class _LoginPageState extends State<SignupPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Sign Up",
+                    "Log In",
                     style: TextStyle(
                       fontSize: 32.0,
                       fontWeight: FontWeight.bold,
@@ -42,7 +41,7 @@ class _LoginPageState extends State<SignupPage> {
               const SizedBox(height: 20.0),
               const Center(
                   child: Text(
-                    "Enter your data to register.",
+                    "Enter your email and password to log in.",
                     style: TextStyle(fontSize: 16.0),
                   )),
               const SizedBox(height: 40.0),
@@ -50,20 +49,6 @@ class _LoginPageState extends State<SignupPage> {
                 key: _formKey,
                 child: Column(
                   children: [
-                    TextFormField(
-                      controller: _nameController,
-                      decoration: const InputDecoration(
-                        labelText: "Name",
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "The name is required";
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 20.0),
                     TextFormField(
                       controller: _emailController,
                       decoration: const InputDecoration(
@@ -114,11 +99,12 @@ class _LoginPageState extends State<SignupPage> {
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const LoginPage()),
+                                  builder: (context) => const MyHomePage(
+                                      title: 'RuralMarketExpress')),
                             );
                           }
                         },
-                        child: const Text("Sign Up"),
+                        child: const Text("Log In"),
                         style: ButtonStyle(
                           minimumSize: MaterialStateProperty.all(
                             Size.fromWidth(350.0), // Ajusta el ancho aquí
@@ -147,19 +133,20 @@ class _LoginPageState extends State<SignupPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text("Do you have an account?"),
+                  const Text("Don't have an account?"),
                   TextButton(
                     onPressed: () {
                       // TODO: Navegar a la página de registro
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const LoginPage()),
+                            builder: (context) => const SignupPage()),
                       );
                     },
-                    child: const Text("Log In"),
+                    child: const Text("Sign Up"),
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.white),
+                      backgroundColor:
+                      MaterialStateProperty.all(Colors.white),
                       foregroundColor: MaterialStateProperty.resolveWith<Color>(
                             (Set<MaterialState> states) {
                           if (states.contains(MaterialState.pressed)) {

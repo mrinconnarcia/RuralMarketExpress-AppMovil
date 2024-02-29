@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:line_icons/line_icons.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:movil_project/productos.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:movil_project/pages/favorite.dart';
+import 'package:movil_project/pages/productos.dart';
+import 'package:movil_project/pages/carrito.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -17,6 +18,13 @@ class _MyHomePageState extends State<MyHomePage> {
   final ButtonStyle style =
       ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
   int _selectedIndex = 0;
+
+  final List<Widget> _pages = [
+    MyHomePage(title: 'RuralMarketExpress'),
+    Otro(), // Cambia por tu widget real
+    Nueva(), // Cambia por tu widget real
+    Otro(), // Cambia por tu widget real
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -139,8 +147,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                   Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>  Otro()),
-                                  );// Aquí puedes agregar la lógica para navegar a la página deseada
+                                        builder: (context) => Otro()),
+                                  ); // Aquí puedes agregar la lógica para navegar a la página deseada
                                 },
                                 child: Image.asset(
                                   'assets/vegetables.jpg',
@@ -260,75 +268,55 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      bottomNavigationBar: Stack(
-        children: [
-          // GoogleNavBar (adjusted padding and positioning)
-          Container(
-            decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  blurRadius: 20,
-                  color: Colors.black.withOpacity(.1),
-                )
-              ],
-            ),
-            child: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0), // Reduced vertical padding
-                child: GNav(
-                  rippleColor: Colors.grey[300]!,
-                  hoverColor: Colors.grey[100]!,
-                  gap: 8,
-                  activeColor: Colors.black,
-                  iconSize: 24,
-                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                  duration: const Duration(milliseconds: 400),
-                  tabBackgroundColor: Colors.grey[100]!,
-                  color: Colors.black,
-                  tabs: [
-                    GButton(
-                      icon: LineIcons.home,
-                      text: 'Home',
-                    ),
-                    // ... (Add more tabs as needed)
-                  ],
-                  selectedIndex: _selectedIndex,
-                  onTabChange: (index) {
-                    setState(() {
-                      _selectedIndex = index;
-                    });
-                  },
-                ),
-              ),
-            ),
-          ),
 
-          // Footer positioned at the bottom (adjusted margin and padding)
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              margin: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 8.0), // Reduced bottom margin
-              padding: const EdgeInsets.all(20.0),
-              decoration: BoxDecoration(
-                color: Colors.amber.shade300,
-                borderRadius: BorderRadius.circular(5.0),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Icon(Icons.home, color: Colors.white),
-                  const Icon(Icons.favorite, color: Colors.white),
-                  const Icon(Icons.shopping_cart, color: Colors.white),
-                  const Icon(Icons.person, color: Colors.white),
-                ],
-              ),
-            ),
-          ),
+
+
+      bottomNavigationBar: CurvedNavigationBar(
+        backgroundColor: Colors.transparent,
+        color: Colors.amber.shade300,
+        buttonBackgroundColor: Colors.amber.shade700,
+        items: <Widget>[
+          Icon(Icons.home, size: 30),
+          Icon(Icons.favorite, size: 30),
+          Icon(Icons.shopping_cart, size: 30),
+          Icon(Icons.person, size: 30),
         ],
-      ),
+        index: _selectedIndex,
+        onTap: (index) {
+          switch (index) {
+            case 0:
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MyHomePage(title: 'RuralMarketExpress')),
+              );
+              break;
+            case 1:
+            // Navigate to your second page (replace with your actual widget)
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Favoritos()),
+              );
+              break;
+            case 2:
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Nueva()), // Assuming Carrito is your cart page
+              );
+              break;
+            case 3:
+            // Navigate to your fourth page (replace with your actual widget)
+            //   Navigator.push(
+            //     context,
+            //     MaterialPageRoute(builder: (context) => Otro()),
+            //   );
+              break;
+          }
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
 
+      ),
     );
   }
 }
