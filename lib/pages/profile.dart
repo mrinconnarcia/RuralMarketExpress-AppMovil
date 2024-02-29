@@ -56,6 +56,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 Text('Birthday date: 12/10/2002'),
                 SizedBox(height: 20), // Añade más espacio aquí
                 Text('Gender: Male'),
+                SizedBox(height: 20), // Añade más espacio aquí
+                Text('Suchiapa, Chiapas, Mexico. '),
               ],
             ),
             SizedBox(height: 24), // Añade más espacio aquí
