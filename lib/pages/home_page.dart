@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:movil_project/pages/cleaning.dart';
+import 'package:movil_project/pages/dairy.dart';
 import 'package:movil_project/pages/favorite.dart';
-import 'package:movil_project/pages/productos.dart';
+import 'package:movil_project/pages/frozen.dart';
+import 'package:movil_project/pages/vegetables.dart';
 import 'package:movil_project/pages/carrito.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -16,7 +19,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final ButtonStyle style =
-      ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
+  ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
@@ -93,12 +96,21 @@ class _MyHomePageState extends State<MyHomePage> {
                           children: [
                             Text('Frozen'),
                             SizedBox(
-                              height: 100.0,
-                              width: 100.0,
-                              child: Image.asset(
-                                'assets/frozen_eat.jpg',
-                                fit: BoxFit.cover,
-                              ),
+                                height: 100.0,
+                                width: 100.0,
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => frozen()),
+                                    ); // Aquí puedes agregar la lógica para navegar a la página deseada
+                                  },
+                                  child: Image.asset(
+                                    'assets/frozen_eat.jpg',
+                                    fit: BoxFit.cover,
+                                  ),
+                                )
                             ),
                           ],
                         ),
@@ -106,12 +118,21 @@ class _MyHomePageState extends State<MyHomePage> {
                           children: [
                             Text('Cleaning'),
                             SizedBox(
-                              height: 100.0,
-                              width: 100.0,
-                              child: Image.asset(
-                                'assets/cleaning.jpg',
-                                fit: BoxFit.cover,
-                              ),
+                                height: 100.0,
+                                width: 100.0,
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Limpieza()),
+                                    ); // Aquí puedes agregar la lógica para navegar a la página deseada
+                                  },
+                                  child: Image.asset(
+                                    'assets/cleaning.jpg',
+                                    fit: BoxFit.cover,
+                                  ),
+                                )
                             ),
                           ],
                         ),
@@ -127,12 +148,21 @@ class _MyHomePageState extends State<MyHomePage> {
                           children: [
                             Text('Dairy'),
                             SizedBox(
-                              height: 100.0,
-                              width: 100.0,
-                              child: Image.asset(
-                                'assets/lacteos.jpg',
-                                fit: BoxFit.cover,
-                              ),
+                                height: 100.0,
+                                width: 100.0,
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Queso()),
+                                    ); // Aquí puedes agregar la lógica para navegar a la página deseada
+                                  },
+                                  child: Image.asset(
+                                    'assets/lacteos.jpg',
+                                    fit: BoxFit.cover,
+                                  ),
+                                )
                             ),
                           ],
                         ),

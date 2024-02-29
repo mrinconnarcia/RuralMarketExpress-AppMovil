@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:project/pages/favorite.dart';
-import 'package:project/pages/home_page.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:project/pages/productos.dart';
+import 'package:movil_project/pages/carrito.dart';
+import 'package:movil_project/pages/favorite.dart';
+import 'package:movil_project/pages/home_page.dart';
 
-import 'carrito.dart';
-
-
+class Perfil extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Profile(),
+    );
+  }
+}
 
 class Profile extends StatefulWidget {
   Profile({Key? key}) : super(key: key);
@@ -15,7 +20,7 @@ class Profile extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<Profile> {
   int _selectedIndex = 0;
 
   @override
@@ -92,41 +97,41 @@ class _MyHomePageState extends State<MyHomePage> {
           Icon(Icons.shopping_cart, size: 30),
           Icon(Icons.person, size: 30),
         ],
-        index: 1,
+        index: 3,
         onTap: (index) {
           switch (index) {
             case 0:
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        MyHomePage(title: 'RuralMarketExpress')),
+                MaterialPageRoute(builder: (context) => MyHomePage(title: 'RuralMarketExpress')),
               );
               break;
             case 1:
             // Navigate to your second page (replace with your actual widget)
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Otro()),
+                MaterialPageRoute(builder: (context) => Favoritos()),
               );
               break;
             case 2:
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        Nueva()), // Assuming Carrito is your cart page
+                MaterialPageRoute(builder: (context) => Nueva()), // Assuming Carrito is your cart page
               );
               break;
             case 3:
             // Navigate to your fourth page (replace with your actual widget)
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Otro()),
+                MaterialPageRoute(builder: (context) => Perfil()),
               );
               break;
           }
+          setState(() {
+            _selectedIndex = index;
+          });
         },
+
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:movil_project/pages/home_page.dart';
 import 'package:movil_project/pages/carrito.dart';
+import 'package:movil_project/pages/profile.dart';
 
 class Favoritos extends StatefulWidget {
   @override
@@ -21,8 +22,26 @@ class _FavoritosState extends State<Favoritos> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Favoritos'),
-        centerTitle: true,
+        title: Text('Favorite'),
+        backgroundColor: Color.fromARGB(255, 216, 214, 103),
+        // actions: <Widget>[
+        //   Padding(
+        //     padding: EdgeInsets.only(right: 20.0),
+        //     child: GestureDetector(
+        //       onTap: () {
+        //         // Navegar a la pantalla del carrito de compras al presionar el ícono
+        //         Navigator.push(
+        //           context,
+        //           MaterialPageRoute(builder: (context) => Nueva()),
+        //         );
+        //       },
+        //       child: Icon(
+        //         Icons.shopping_cart,
+        //         size: 26.0,
+        //       ),
+        //     ),
+        //   ),
+        // ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -139,10 +158,10 @@ class _FavoritosState extends State<Favoritos> {
               break;
             case 3:
             // Navigate to your fourth page (replace with your actual widget)
-            //   Navigator.push(
-            //     context,
-            //     MaterialPageRoute(builder: (context) => Otro()),
-            //   );
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Perfil()),
+              );
               break;
           }
           setState(() {

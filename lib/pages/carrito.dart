@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movil_project/pages/favorite.dart';
 import 'package:movil_project/pages/home_page.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:movil_project/pages/profile.dart';
 
 
 class Nueva extends StatelessWidget {
@@ -49,6 +50,7 @@ class _MyHomePageState extends State<Car> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Carrito de Compras'),
+        backgroundColor: Color.fromARGB(255, 216, 214, 103),
       ),
       body: Column(
         children: [
@@ -181,10 +183,10 @@ class _MyHomePageState extends State<Car> {
               break;
             case 3:
             // Navigate to your fourth page (replace with your actual widget)
-            //   Navigator.push(
-            //     context,
-            //     MaterialPageRoute(builder: (context) => Otro()),
-            //   );
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Perfil()),
+              );
               break;
           }
           setState(() {
