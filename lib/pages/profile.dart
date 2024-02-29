@@ -1,21 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:project/pages/favorite.dart';
+import 'package:project/pages/home_page.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:project/pages/productos.dart';
 
-void main() {
-  runApp(MyApp());
-}
+import 'carrito.dart';
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: MyHomePage(),
-    );
-  }
-}
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key}) : super(key: key);
+
+class Profile extends StatefulWidget {
+  Profile({Key? key}) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -98,24 +92,38 @@ class _MyHomePageState extends State<MyHomePage> {
           Icon(Icons.shopping_cart, size: 30),
           Icon(Icons.person, size: 30),
         ],
-        index: _selectedIndex,
+        index: 1,
         onTap: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-          // Aquí puedes implementar la navegación correspondiente
           switch (index) {
             case 0:
-            // Navegar a la pantalla principal
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        MyHomePage(title: 'RuralMarketExpress')),
+              );
               break;
             case 1:
-            // Navegar a la pantalla de favoritos
+            // Navigate to your second page (replace with your actual widget)
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Otro()),
+              );
               break;
             case 2:
-            // Navegar a la pantalla del carrito de compras
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        Nueva()), // Assuming Carrito is your cart page
+              );
               break;
             case 3:
-            // Navegar a la pantalla de perfil
+            // Navigate to your fourth page (replace with your actual widget)
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Otro()),
+              );
               break;
           }
         },
