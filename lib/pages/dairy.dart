@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:movil_project/models/product_model.dart';
 import 'package:movil_project/pages/carrito.dart';
+import 'package:movil_project/pages/favorite.dart';
 import 'package:movil_project/pages/home_page.dart';
+import 'package:movil_project/pages/profile.dart';
+import 'package:movil_project/services/product_service.dart';
+
+import 'package:flutter/material.dart';
+import 'package:movil_project/models/product_model.dart';
+import 'package:movil_project/services/product_service.dart';
 
 class Queso extends StatefulWidget {
   @override
@@ -10,18 +18,20 @@ class Queso extends StatefulWidget {
 
 class _QuesoState extends State<Queso> {
   int _selectedIndex = 0;
+  late Future<List<ProductModel>> futureProducts;
+  late Future<ProductModel> futureProduct;
 
-  // Lista de URLs de imágenes para los productos
-  List<String> productImages = [
-    'https://www.miym.com.mx/wp-content/uploads/2021/05/ecolean_producto_banner.png',
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTziifiZsLF1YhGqJJ7qfY5n4auysnUYw6pOA&usqp=CAU',
-    'https://chedrauimx.vtexassets.com/arquivos/ids/26909371/7501020563733_00.jpg?v=638443416538900000',
-    'https://latexana.mx/wp-content/uploads/2020/07/5117-1.jpg',
-    'https://res.cloudinary.com/riqra/image/upload/w_656,h_656,c_limit,q_auto,f_auto/v1678811231/sellers/11/tbyjgfgwtryszc8gwp2n.jpg',
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzxbo-b6VPSukXNPwELAyeApgCFoa6SKpyCBM_wAtGvbFWopH8aOOiAAdwCN_2O8dMSto&usqp=CAU',
-    'https://www.mayoreototal.mx/cdn/shop/products/3c4a1144-1aff-48e7-8c9e-4ff55d9b509b_350x.jpg?v=1604439703',
-    'https://mvsnoticias.com/u/fotografias/m/2023/11/1/f768x1-573943_574070_21.png', // Agrega más URLs de imágenes según sea necesario
-  ];
+  @override
+  void initState() {
+    super.initState();
+
+    // Inicializamos futureProducts para obtener la lista de productos
+    ProductService ps = ProductService();
+    futureProducts = ps.fetchProducts();
+
+    // Inicializamos futureProduct para obtener un producto específico (por ejemplo, '300524d8-adf6-4d5d-9ef5-cc39db98e281')
+    futureProduct = ps.fetchProduct('300524d8-adf6-4d5d-9ef5-cc39db98e281');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,38 +40,80 @@ class _QuesoState extends State<Queso> {
         title: Text('Dairy'),
         backgroundColor: Color.fromARGB(255, 216, 214, 103),
       ),
-      body: GridView.count(
-        crossAxisCount: 2,
-        children: List.generate(productImages.length, (index) {
-          return Center(
-            child: Column(
-              children: <Widget>[
-                Expanded(
-                  child: Card(
-                    child: AspectRatio(
-                      aspectRatio: 1.0,
-                      child: Image.network(
-                        productImages[index], // URL de la imagen del producto
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                ),
-                Text('Producto ${index + 1}'),
-                Text('precioo ${index + 1}.'),
-                TextButton(
-                  style: TextButton.styleFrom(
-                    backgroundColor:
-                    Color.fromARGB(255, 216, 214, 103), // Color del AppBar
-                  ),
-                  child: const Text('AGREGAR',
-                      style: TextStyle(color: Colors.black)),
-                  onPressed: () {},
-                ),
-              ],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                // Ejemplo de cómo usar futureProducts para mostrar una lista de productos
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => FutureBuilder<List<ProductModel>>(
+                            future: futureProducts,
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return CircularProgressIndicator();
+                              } else if (snapshot.hasError) {
+                                return Text('${snapshot.error}');
+                              } else if (snapshot.hasData) {
+                                return ListView.builder(
+                                  itemCount: snapshot.data!.length,
+                                  itemBuilder: (context, index) {
+                                    return ListTile(
+                                      title: Text(snapshot.data![index].name),
+                                      subtitle: Text(
+                                          snapshot.data![index].description),
+                                    );
+                                  },
+                                );
+                              } else {
+                                return Text('No data found!');
+                              }
+                            },
+                          )),
+                );
+              },
+              child: Text('Mostrar Lista de Productos'),
             ),
-          );
-        }),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                // Ejemplo de cómo usar futureProduct para mostrar un producto específico
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => FutureBuilder<ProductModel>(
+                            future: futureProduct,
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return CircularProgressIndicator();
+                              } else if (snapshot.hasError) {
+                                return Text('${snapshot.error}');
+                              } else if (snapshot.hasData) {
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('Nombre: ${snapshot.data!.name}'),
+                                    Text(
+                                        'Descripción: ${snapshot.data!.description}'),
+                                    Text('Precio: \$ ${snapshot.data!.price}'),
+                                  ],
+                                );
+                              } else {
+                                return Text('No data found!');
+                              }
+                            },
+                          )),
+                );
+              },
+              child: Text('Mostrar Producto Específico'),
+            ),
+          ],
+        ),
       ),
       bottomNavigationBar: CurvedNavigationBar(
         backgroundColor: Colors.transparent,
@@ -73,8 +125,11 @@ class _QuesoState extends State<Queso> {
           Icon(Icons.shopping_cart, size: 30),
           Icon(Icons.person, size: 30),
         ],
-        index: 1,
+        index: _selectedIndex,
         onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
           switch (index) {
             case 0:
               Navigator.push(
@@ -85,31 +140,24 @@ class _QuesoState extends State<Queso> {
               );
               break;
             case 1:
-            // Navigate to your second page (replace with your actual widget)
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Queso()),
+                MaterialPageRoute(builder: (context) => Favoritos()),
               );
               break;
             case 2:
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        Nueva()), // Assuming Carrito is your cart page
+                MaterialPageRoute(builder: (context) => Nueva()),
               );
               break;
             case 3:
-            // Navigate to your fourth page (replace with your actual widget)
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Queso()),
+                MaterialPageRoute(builder: (context) => Perfil()),
               );
               break;
           }
-          setState(() {
-            _selectedIndex = index;
-          });
         },
       ),
     );

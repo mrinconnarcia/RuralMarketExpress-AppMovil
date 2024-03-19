@@ -1,7 +1,12 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:movil_project/models/product_model.dart';
 import 'package:movil_project/pages/carrito.dart';
+import 'package:movil_project/pages/favorite.dart';
 import 'package:movil_project/pages/home_page.dart';
+import 'package:movil_project/pages/profile.dart';
+import 'package:movil_project/services/product_service.dart';
 
 class Limpieza extends StatefulWidget {
   @override
@@ -9,19 +14,56 @@ class Limpieza extends StatefulWidget {
 }
 
 class _LimpiezaState extends State<Limpieza> {
+  late Future<List<ProductModel>> futureProducts;
   int _selectedIndex = 0;
 
-  // Lista de URLs de imágenes para los productos
-  List<String> productImages = [
-    'https://images.ecestaticos.com/U4ZuVOaouVSFJc_yKw18Y7046iA=/18x0:447x458/1440x1920/filters:fill(white):format(jpg)/f.elconfidencial.com%2Foriginal%2Fd48%2F7a1%2F259%2Fd487a12590a2135f013c9d8f19374496.jpg',
-    'https://m.media-amazon.com/images/I/81TNaERsgiL._AC_SY879_.jpg',
-    'https://m.media-amazon.com/images/I/81edOUviBZL.__AC_SX300_SY300_QL70_ML2_.jpg',
-    'https://m.media-amazon.com/images/I/71x03tsSihL.__AC_SX300_SY300_QL70_ML2_.jpg',
-    'https://m.media-amazon.com/images/I/81-Le25glaL.__AC_SX300_SY300_QL70_ML2_.jpg',
-    'https://m.media-amazon.com/images/I/61pQXeBOWTL.__AC_SX300_SY300_QL70_ML2_.jpg',
-    'https://m.media-amazon.com/images/I/71QxSsE51WL.__AC_SX300_SY300_QL70_ML2_.jpg',
-    'https://m.media-amazon.com/images/I/61VrnW1QtHL._AC_SL1000_.jpg', // Agrega más URLs de imágenes según sea necesario
-  ];
+  @override
+  void initState() {
+    super.initState();
+
+    ProductService ps = ProductService();
+    futureProducts = ps.fetchProducts();
+  }
+
+  Widget buildProducts(List<ProductModel> products) {
+    return ListView.separated(
+      itemCount: products.length,
+      separatorBuilder: (context, index) => Divider(), // Optional separator between items
+      itemBuilder: (context, index) {
+        final product = products[index];
+
+        return Card(
+          clipBehavior: Clip.antiAlias,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)), // Adjust corner radius
+          elevation: 5.0, // Add a shadow effect
+          child: Padding(
+            padding: EdgeInsets.all(10.0), // Add padding
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start, // Align content to the left
+              children: [
+                // Image with a border
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(5.0),
+                  child: Image.network(product.urlImg),
+                ),
+                SizedBox(height: 10.0), // Add spacing between image and text
+                Text(product.name, style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)),
+                Text(product.description, style: TextStyle(fontSize: 14.0)),
+                SizedBox(height: 5.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Align price to the right
+                  children: [
+                    Text('\$ ' + product.price.toString(), style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
+                    Text('Add to basket', style: TextStyle(fontSize: 14.0, color: Colors.green)),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,38 +72,21 @@ class _LimpiezaState extends State<Limpieza> {
         title: Text('Cleaning'),
         backgroundColor: Color.fromARGB(255, 216, 214, 103),
       ),
-      body: GridView.count(
-        crossAxisCount: 2,
-        children: List.generate(productImages.length, (index) {
-          return Center(
-            child: Column(
-              children: <Widget>[
-                Expanded(
-                  child: Card(
-                    child: AspectRatio(
-                      aspectRatio: 1.0,
-                      child: Image.network(
-                        productImages[index], // URL de la imagen del producto
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                ),
-                Text('Producto ${index + 1}'),
-                Text('precioo ${index + 1}.'),
-                TextButton(
-                  style: TextButton.styleFrom(
-                    backgroundColor:
-                    Color.fromARGB(255, 216, 214, 103), // Color del AppBar
-                  ),
-                  child: const Text('AGREGAR',
-                      style: TextStyle(color: Colors.black)),
-                  onPressed: () {},
-                ),
-              ],
-            ),
-          );
-        }),
+      body: Center(
+        child: FutureBuilder<List<ProductModel>>(
+          future: futureProducts,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator();
+            } else if (snapshot.hasError) {
+              return Text('${snapshot.error}');
+            } else if (snapshot.hasData) {
+              return buildProducts(snapshot.data!);
+            } else {
+              return Text('No data found!');
+            }
+          },
+        ),
       ),
       bottomNavigationBar: CurvedNavigationBar(
         backgroundColor: Colors.transparent,
@@ -73,43 +98,37 @@ class _LimpiezaState extends State<Limpieza> {
           Icon(Icons.shopping_cart, size: 30),
           Icon(Icons.person, size: 30),
         ],
-        index: 1,
+        index: _selectedIndex,
         onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
           switch (index) {
             case 0:
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        MyHomePage(title: 'RuralMarketExpress')),
+                MaterialPageRoute(builder: (context) => MyHomePage(title: 'RuralMarketExpress')),
               );
               break;
             case 1:
-            // Navigate to your second page (replace with your actual widget)
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Limpieza()),
+                MaterialPageRoute(builder: (context) => Favoritos()),
               );
               break;
             case 2:
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        Nueva()), // Assuming Carrito is your cart page
+                MaterialPageRoute(builder: (context) => Nueva()),
               );
               break;
             case 3:
-            // Navigate to your fourth page (replace with your actual widget)
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Limpieza()),
+                MaterialPageRoute(builder: (context) => Perfil()),
               );
               break;
           }
-          setState(() {
-            _selectedIndex = index;
-          });
         },
       ),
     );
