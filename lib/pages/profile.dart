@@ -3,88 +3,98 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:movil_project/pages/carrito.dart';
 import 'package:movil_project/pages/favorite.dart';
 import 'package:movil_project/pages/home_page.dart';
+import 'package:movil_project/services/product_service.dart'; // Importa el servicio para obtener el perfil del usuario
+import 'package:movil_project/models/product_model.dart'; // Importa el modelo de perfil de usuario
 
-class Perfil extends StatelessWidget {
+class Perfil extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Profile(),
-    );
-  }
+  _PerfilState createState() => _PerfilState();
 }
 
-class Profile extends StatefulWidget {
-  Profile({Key? key}) : super(key: key);
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<Profile> {
+class _PerfilState extends State<Perfil> {
+  late Future<UserProfileModel> futureUserProfile;
   int _selectedIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    futureUserProfile = ProductService().fetchUserProfile(); // Llama a la función para obtener el perfil del usuario
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Profile'),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 28), // Añade más espacio aquí
-            Text(
-              'Hello!',
-              style: TextStyle(fontSize: 28),
-            ),
-            Text(
-              'Welcome, Martin',
-              style: TextStyle(fontSize: 28),
-            ),
-            SizedBox(height: 20), // Añade más espacio aquí
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Name: Martin'),
-                SizedBox(height: 20), // Añade más espacio aquí
-                Text('Last name: Rincon Narcia'),
-                SizedBox(height: 20), // Añade más espacio aquí
-                Text('E-mail: martin@gmail.com'),
-                SizedBox(height: 20), // Añade más espacio aquí
-                Text('Phone: 9612851122'),
-                SizedBox(height: 20), // Añade más espacio aquí
-                Text('Birthday date: 12/10/2002'),
-                SizedBox(height: 20), // Añade más espacio aquí
-                Text('Gender: Male'),
-                SizedBox(height: 20), // Añade más espacio aquí
-                Text('Suchiapa, Chiapas, Mexico. '),
-              ],
-            ),
-            SizedBox(height: 24), // Añade más espacio aquí
-            Column(
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    // Handle update information button press
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFFC7DE85),
+        child: FutureBuilder<UserProfileModel>(
+          future: futureUserProfile,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else if (snapshot.hasData) {
+              final userProfile = snapshot.data!;
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 28),
+                  Text(
+                    'Hello!',
+                    style: TextStyle(fontSize: 28),
                   ),
-                  child: Text('Update information'),
-                ),
-                SizedBox(height: 22), // Añade más espacio aquí
-                ElevatedButton(
-                  onPressed: () {
-                    // Handle delete account button press
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFFFAB100),
+                  Text(
+                    'Welcome, ${userProfile.firstName}',
+                    style: TextStyle(fontSize: 28),
                   ),
-                  child: Text('Delete Account'),
-                ),
-              ],
-            ),
-            SizedBox(height: 24), // Añade más espacio aquí
-          ],
+                  SizedBox(height: 20),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Name: ${userProfile.firstName} ${userProfile.lastName}'),
+                      SizedBox(height: 20),
+                      Text('E-mail: ${userProfile.email}'),
+                      SizedBox(height: 20),
+                      Text('Phone: ${userProfile.phone}'),
+                      SizedBox(height: 20),
+                      // Aquí puedes mostrar los demás datos del perfil
+                    ],
+                  ),
+                  SizedBox(height: 24),
+                  Column(
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          // Handle update information button press
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFFC7DE85),
+                        ),
+                        child: Text('Update information'),
+                      ),
+                      SizedBox(height: 22),
+                      ElevatedButton(
+                        onPressed: () {
+                          // Handle delete account button press
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFFFAB100),
+                        ),
+                        child: Text('Delete Account'),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 24),
+                ],
+              );
+            } else {
+              return Text('No data found!');
+            }
+          },
         ),
       ),
       bottomNavigationBar: CurvedNavigationBar(

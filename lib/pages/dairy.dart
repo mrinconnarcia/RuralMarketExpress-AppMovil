@@ -7,10 +7,6 @@ import 'package:movil_project/pages/home_page.dart';
 import 'package:movil_project/pages/profile.dart';
 import 'package:movil_project/services/product_service.dart';
 
-import 'package:flutter/material.dart';
-import 'package:movil_project/models/product_model.dart';
-import 'package:movil_project/services/product_service.dart';
-
 class Queso extends StatefulWidget {
   @override
   _QuesoState createState() => _QuesoState();
@@ -51,29 +47,29 @@ class _QuesoState extends State<Queso> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => FutureBuilder<List<ProductModel>>(
-                            future: futureProducts,
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return CircularProgressIndicator();
-                              } else if (snapshot.hasError) {
-                                return Text('${snapshot.error}');
-                              } else if (snapshot.hasData) {
-                                return ListView.builder(
-                                  itemCount: snapshot.data!.length,
-                                  itemBuilder: (context, index) {
-                                    return ListTile(
-                                      title: Text(snapshot.data![index].name),
-                                      subtitle: Text(
-                                          snapshot.data![index].description),
-                                    );
-                                  },
+                        future: futureProducts,
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return CircularProgressIndicator();
+                          } else if (snapshot.hasError) {
+                            return Text('${snapshot.error}');
+                          } else if (snapshot.hasData) {
+                            return ListView.builder(
+                              itemCount: snapshot.data!.length,
+                              itemBuilder: (context, index) {
+                                return ListTile(
+                                  title: Text(snapshot.data![index].name),
+                                  subtitle: Text(
+                                      snapshot.data![index].description),
                                 );
-                              } else {
-                                return Text('No data found!');
-                              }
-                            },
-                          )),
+                              },
+                            );
+                          } else {
+                            return Text('No data found!');
+                          }
+                        },
+                      )),
                 );
               },
               child: Text('Mostrar Lista de Productos'),
@@ -86,28 +82,28 @@ class _QuesoState extends State<Queso> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => FutureBuilder<ProductModel>(
-                            future: futureProduct,
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return CircularProgressIndicator();
-                              } else if (snapshot.hasError) {
-                                return Text('${snapshot.error}');
-                              } else if (snapshot.hasData) {
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('Nombre: ${snapshot.data!.name}'),
-                                    Text(
-                                        'Descripción: ${snapshot.data!.description}'),
-                                    Text('Precio: \$ ${snapshot.data!.price}'),
-                                  ],
-                                );
-                              } else {
-                                return Text('No data found!');
-                              }
-                            },
-                          )),
+                        future: futureProduct,
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return CircularProgressIndicator();
+                          } else if (snapshot.hasError) {
+                            return Text('${snapshot.error}');
+                          } else if (snapshot.hasData) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Nombre: ${snapshot.data!.name}'),
+                                Text(
+                                    'Descripción: ${snapshot.data!.description}'),
+                                Text('Precio: \$ ${snapshot.data!.price}'),
+                              ],
+                            );
+                          } else {
+                            return Text('No data found!');
+                          }
+                        },
+                      )),
                 );
               },
               child: Text('Mostrar Producto Específico'),

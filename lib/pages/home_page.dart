@@ -5,6 +5,7 @@ import 'package:movil_project/pages/cleaning.dart';
 import 'package:movil_project/pages/dairy.dart';
 import 'package:movil_project/pages/favorite.dart';
 import 'package:movil_project/pages/frozen.dart';
+import 'package:movil_project/pages/profile.dart';
 import 'package:movil_project/pages/vegetables.dart';
 import 'package:movil_project/pages/carrito.dart';
 
@@ -335,10 +336,10 @@ class _MyHomePageState extends State<MyHomePage> {
               break;
             case 3:
             // Navigate to your fourth page (replace with your actual widget)
-            //   Navigator.push(
-            //     context,
-            //     MaterialPageRoute(builder: (context) => Otro()),
-            //   );
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Perfil()),
+              );
               break;
           }
           setState(() {

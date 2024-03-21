@@ -23,3 +23,32 @@ class ProductModel {
     );
   }
 }
+
+class UserProfileModel {
+  final String firstName;
+  final String lastName;
+  final String email;
+  final String phone;
+  final String largePictureUrl;
+
+  UserProfileModel({
+    required this.firstName,
+    required this.lastName,
+    required this.email,
+    required this.phone,
+    required this.largePictureUrl,
+  });
+
+  factory UserProfileModel.fromJson(Map<String, dynamic> json) {
+    final name = json['name'];
+    final picture = json['picture'];
+
+    return UserProfileModel(
+      firstName: name['first'],
+      lastName: name['last'],
+      email: json['email'],
+      phone: json['phone'],
+      largePictureUrl: picture['large'],
+    );
+  }
+}

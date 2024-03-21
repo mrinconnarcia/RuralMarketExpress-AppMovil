@@ -57,4 +57,19 @@ class ProductService {
       throw Exception('Failed to load product: ${response.reasonPhrase}');
     }
   }
+
+  Future<UserProfileModel> fetchUserProfile() async {
+    final response = await http.get(Uri.parse('https://randomuser.me/api/'));
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> responseData = jsonDecode(response.body);
+
+      final List<dynamic> results = responseData['results'];
+      final userProfileJson = results.first;
+
+      return UserProfileModel.fromJson(userProfileJson);
+    } else {
+      throw Exception('Failed to load user profile: ${response.reasonPhrase}');
+    }
+  }
 }
