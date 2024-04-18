@@ -5,6 +5,7 @@ import 'package:movil_project/pages/cleaning.dart';
 import 'package:movil_project/pages/dairy.dart';
 import 'package:movil_project/pages/favorite.dart';
 import 'package:movil_project/pages/frozen.dart';
+import 'package:movil_project/pages/ofertas.dart';
 import 'package:movil_project/pages/profile.dart';
 import 'package:movil_project/pages/vegetables.dart';
 import 'package:movil_project/pages/carrito.dart';
@@ -81,6 +82,32 @@ class _MyHomePageState extends State<MyHomePage> {
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                 ),
+              ),
+            ),
+
+            // Agrega un apartado para las ofertas
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 20.0),
+              child: Column(
+                children: [
+                  Text(
+                    'Discover our offers!',
+                    style: TextStyle(
+                      fontSize: 24.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 10.0),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => OfertasPage()),
+                      );
+                    },
+                    child: Text('View Offers'),
+                  ),
+                ],
               ),
             ),
 

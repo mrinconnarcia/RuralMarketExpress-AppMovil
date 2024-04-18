@@ -14,11 +14,234 @@ class Perfil extends StatefulWidget {
 class _PerfilState extends State<Perfil> {
   late Future<UserProfileModel> futureUserProfile;
   int _selectedIndex = 0;
+  bool _showAddProductModal = false;
+  bool _showAddOfferModal = false;
+  String _productTitle = '';
+  String _productDescription = '';
+  num _productPrice = 0.0;
+  String _productImageUrl = '';
+  String _productDiscount = '';
+  String _productAvailability = '';
 
   @override
   void initState() {
     super.initState();
     futureUserProfile = ProductService().fetchUserProfile(); // Llama a la función para obtener el perfil del usuario
+  }
+
+  void _showAddProductModalBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Add Product',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 16.0),
+              TextField(
+                decoration: InputDecoration(
+                  hintText: 'Product Title',
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    _productTitle = value;
+                  });
+                },
+              ),
+              SizedBox(height: 16.0),
+              TextField(
+                decoration: InputDecoration(
+                  hintText: 'Product Description',
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    _productDescription = value;
+                  });
+                },
+              ),
+              SizedBox(height: 16.0),
+              TextField(
+                decoration: InputDecoration(
+                  hintText: 'Product Price',
+                ),
+                keyboardType: TextInputType.number,
+                onChanged: (value) {
+                  setState(() {
+                    _productPrice = double.parse(value);
+                  });
+                },
+              ),
+              SizedBox(height: 16.0),
+              TextField(
+                decoration: InputDecoration(
+                  hintText: 'Product Image URL',
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    _productImageUrl = value;
+                  });
+                },
+              ),
+              SizedBox(height: 16.0),
+              ElevatedButton(
+                onPressed: () async {
+                  try {
+                    await ProductService().addProduct(
+                      _productTitle,
+                      _productPrice,
+                      _productDescription,
+                      _productImageUrl,
+                    );
+                    print('Product added successfully');
+                    setState(() {
+                      _showAddProductModal = false;
+                    });
+                    Navigator.pop(context); // Close the modal after adding the product
+                  } catch (e) {
+                    print('Failed to add product: $e');
+                  }
+                },
+                child: Text('Save'),
+              ),
+              SizedBox(height: 8.0),
+              TextButton(
+                onPressed: () {
+                  setState(() {
+                    _showAddProductModal = false;
+                  });
+                  Navigator.pop(context); // Close the modal without adding the product
+                },
+                child: Text('Cancel'),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _showAddOfferModalBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          padding: EdgeInsets.all(25.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Add Offer',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 16.0),
+              TextField(
+                decoration: InputDecoration(
+                  hintText: 'Offer Title',
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    _productTitle = value;
+                  });
+                },
+              ),
+              SizedBox(height: 16.0),
+              TextField(
+                decoration: InputDecoration(
+                  hintText: 'Offer Description',
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    _productDescription = value;
+                  });
+                },
+              ),
+              SizedBox(height: 16.0),
+              TextField(
+                decoration: InputDecoration(
+                  hintText: 'Offer Price',
+                ),
+                keyboardType: TextInputType.number,
+                onChanged: (value) {
+                  setState(() {
+                    _productPrice = double.parse(value);
+                  });
+                },
+              ),
+              // SizedBox(height: 16.0),
+              // TextField(
+              //   decoration: InputDecoration(
+              //     hintText: 'Offer Image URL',
+              //   ),
+              //   onChanged: (value) {
+              //     setState(() {
+              //       _productImageUrl = value;
+              //     });
+              //   },
+              // ),
+              SizedBox(height: 16.0),
+              TextField(
+                decoration: InputDecoration(
+                  hintText: 'Offer Discount',
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    _productDiscount = value;
+                  });
+                },
+              ),
+              SizedBox(height: 16.0),
+              TextField(
+                decoration: InputDecoration(
+                  hintText: 'Offer Availability',
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    _productAvailability = value;
+                  });
+                },
+              ),
+              SizedBox(height: 16.0),
+              ElevatedButton(
+                onPressed: () async {
+                  try {
+                    await ProductService().addOffer(
+                      _productTitle,
+                      _productPrice,
+                      _productDescription,
+                      _productDiscount,
+                      _productAvailability,
+                    );
+                    print('Offer added successfully');
+                    setState(() {
+                      _showAddOfferModal = false;
+                    });
+                  } catch (e) {
+                    print('Failed to add offer: $e');
+                  }
+                },
+                child: Text('Save'),
+              ),
+              SizedBox(height: 8.0),
+              TextButton(
+                onPressed: () {
+                  setState(() {
+                    _showAddOfferModal = false;
+                  });
+                },
+                child: Text('Cancel'),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -85,6 +308,32 @@ class _PerfilState extends State<Perfil> {
                           backgroundColor: Color(0xFFFAB100),
                         ),
                         child: Text('Delete Account'),
+                      ),
+                      SizedBox(height: 22),
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            _showAddProductModal = true;
+                          });
+                          _showAddProductModalBottomSheet();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFFFAB100),
+                        ),
+                        child: Text('Add Product'),
+                      ),
+                      SizedBox(height: 22),
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            _showAddOfferModal = true;
+                          });
+                          _showAddOfferModalBottomSheet();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFFFAB100),
+                        ),
+                        child: Text('Add Offer'),
                       ),
                     ],
                   ),

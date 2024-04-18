@@ -25,8 +25,7 @@ class _QuesoState extends State<Queso> {
     ProductService ps = ProductService();
     futureProducts = ps.fetchProducts();
 
-    // Inicializamos futureProduct para obtener un producto específico (por ejemplo, '300524d8-adf6-4d5d-9ef5-cc39db98e281')
-    futureProduct = ps.fetchProduct('300524d8-adf6-4d5d-9ef5-cc39db98e281');
+    futureProduct = ps.fetchProduct('f071721a-af36-4278-bbe9-85954dd38c71');
   }
 
   @override
@@ -40,40 +39,40 @@ class _QuesoState extends State<Queso> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ElevatedButton(
-              onPressed: () {
-                // Ejemplo de cómo usar futureProducts para mostrar una lista de productos
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => FutureBuilder<List<ProductModel>>(
-                        future: futureProducts,
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return CircularProgressIndicator();
-                          } else if (snapshot.hasError) {
-                            return Text('${snapshot.error}');
-                          } else if (snapshot.hasData) {
-                            return ListView.builder(
-                              itemCount: snapshot.data!.length,
-                              itemBuilder: (context, index) {
-                                return ListTile(
-                                  title: Text(snapshot.data![index].name),
-                                  subtitle: Text(
-                                      snapshot.data![index].description),
-                                );
-                              },
-                            );
-                          } else {
-                            return Text('No data found!');
-                          }
-                        },
-                      )),
-                );
-              },
-              child: Text('Mostrar Lista de Productos'),
-            ),
+            // ElevatedButton(
+            //   onPressed: () {
+            //     // Ejemplo de cómo usar futureProducts para mostrar una lista de productos
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(
+            //           builder: (context) => FutureBuilder<List<ProductModel>>(
+            //             future: futureProducts,
+            //             builder: (context, snapshot) {
+            //               if (snapshot.connectionState ==
+            //                   ConnectionState.waiting) {
+            //                 return CircularProgressIndicator();
+            //               } else if (snapshot.hasError) {
+            //                 return Text('${snapshot.error}');
+            //               } else if (snapshot.hasData) {
+            //                 return ListView.builder(
+            //                   itemCount: snapshot.data!.length,
+            //                   itemBuilder: (context, index) {
+            //                     return ListTile(
+            //                       title: Text(snapshot.data![index].name),
+            //                       subtitle: Text(
+            //                           snapshot.data![index].description),
+            //                     );
+            //                   },
+            //                 );
+            //               } else {
+            //                 return Text('No data found!');
+            //               }
+            //             },
+            //           )),
+            //     );
+            //   },
+            //   child: Text('Mostrar Lista de Productos'),
+            // ),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {

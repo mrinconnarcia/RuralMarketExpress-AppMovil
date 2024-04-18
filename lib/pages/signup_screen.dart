@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:movil_project/pages/login_screen.dart';
+import 'package:movil_project/services/product_service.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({Key? key}) : super(key: key);
 
   @override
-  State<SignupPage> createState() => _LoginPageState();
+  State<SignupPage> createState() => _SignupPageState();
 }
 
-class _LoginPageState extends State<SignupPage> {
+class _SignupPageState extends State<SignupPage> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
+  final _lastnameController = TextEditingController();
+  final _phoneController = TextEditingController();
   final _emailController = TextEditingController();
+  final _birthdayController = TextEditingController();
   final _passwordController = TextEditingController();
 
   @override
@@ -20,8 +24,7 @@ class _LoginPageState extends State<SignupPage> {
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Padding(
-          padding:
-          const EdgeInsets.symmetric(horizontal: 16.0, vertical: 100.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 100.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,10 +44,11 @@ class _LoginPageState extends State<SignupPage> {
               ),
               const SizedBox(height: 20.0),
               const Center(
-                  child: Text(
-                    "Enter your data to register.",
-                    style: TextStyle(fontSize: 16.0),
-                  )),
+                child: Text(
+                  "Enter your data to register.",
+                  style: TextStyle(fontSize: 16.0),
+                ),
+              ),
               const SizedBox(height: 40.0),
               Form(
                 key: _formKey,
@@ -65,6 +69,34 @@ class _LoginPageState extends State<SignupPage> {
                     ),
                     const SizedBox(height: 20.0),
                     TextFormField(
+                      controller: _lastnameController,
+                      decoration: const InputDecoration(
+                        labelText: "Lastname",
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "The lastname is required";
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 20.0),
+                    TextFormField(
+                      controller: _phoneController,
+                      decoration: const InputDecoration(
+                        labelText: "Phone",
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "The phone is required";
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 20.0),
+                    TextFormField(
                       controller: _emailController,
                       decoration: const InputDecoration(
                         labelText: "Email",
@@ -78,6 +110,20 @@ class _LoginPageState extends State<SignupPage> {
                             r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$")
                             .hasMatch(value)) {
                           return "Invalid e-mail address";
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 20.0),
+                    TextFormField(
+                      controller: _birthdayController,
+                      decoration: const InputDecoration(
+                        labelText: "Birthday",
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "The birthday is required";
                         }
                         return null;
                       },
@@ -107,33 +153,37 @@ class _LoginPageState extends State<SignupPage> {
                     SizedBox(
                       height: 40.0,
                       child: ElevatedButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            // TODO: Iniciar sesión con Firebase
-                            // Si el inicio de sesión es exitoso:
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const LoginPage()),
-                            );
-                          }
-                        },
-                        child: const Text("Sign Up"),
+                          onPressed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              try {
+                                await ProductService().addUser(
+                                  _nameController.text,
+                                  _lastnameController.text,
+                                  _phoneController.text,
+                                  _emailController.text,
+                                  _birthdayController.text,
+                                  _passwordController.text,
+                                );
+                                print('User created successfully');
+                                // Aquí podrías agregar cualquier lógica adicional después de crear el usuario
+                              } catch (e) {
+                                print('Failed to create user: $e');
+                                // Aquí podrías manejar el error de alguna manera, como mostrar un diálogo de error al usuario
+                              }
+                            }
+                          },
+                          child: const Text("Sign Up"),
                         style: ButtonStyle(
                           minimumSize: MaterialStateProperty.all(
                             Size.fromWidth(350.0), // Ajusta el ancho aquí
                           ),
-                          backgroundColor:
-                          MaterialStateProperty.all(Colors.yellow.shade400),
-                          foregroundColor:
-                          MaterialStateProperty.resolveWith<Color>(
+                          backgroundColor: MaterialStateProperty.all(Colors.yellow.shade400),
+                          foregroundColor: MaterialStateProperty.resolveWith<Color>(
                                 (Set<MaterialState> states) {
                               if (states.contains(MaterialState.pressed)) {
-                                return Colors
-                                    .black; // Color del texto cuando el botón está presionado
+                                return Colors.black; // Color del texto cuando el botón está presionado
                               } else {
-                                return Colors
-                                    .white; // Color del texto en estado normal
+                                return Colors.white; // Color del texto en estado normal
                               }
                             },
                           ),
@@ -147,6 +197,7 @@ class _LoginPageState extends State<SignupPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  const Text("Do you have an account?"),
                   const Text("Do you have an account?"),
                   TextButton(
                     onPressed: () {

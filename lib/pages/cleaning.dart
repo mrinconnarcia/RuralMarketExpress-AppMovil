@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:movil_project/models/product_model.dart';
@@ -54,7 +53,25 @@ class _LimpiezaState extends State<Limpieza> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween, // Align price to the right
                   children: [
                     Text('\$ ' + product.price.toString(), style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
-                    Text('Add to basket', style: TextStyle(fontSize: 14.0, color: Colors.green)),
+                    Row(
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                            // Handle edit button press
+                            _openEditProductModal(product);
+                          },
+                          child: Text('Edit', style: TextStyle(color: Colors.blue)),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            // Handle add to basket button press
+                            // You can add the product to the basket here
+                            print('Add to basket: ${product.name}');
+                          },
+                          child: Text('Add to basket', style: TextStyle(color: Colors.green)),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ],
@@ -63,6 +80,97 @@ class _LimpiezaState extends State<Limpieza> {
         );
       },
     );
+  }
+
+  Future<void> _openEditProductModal(ProductModel product) async {
+    final editedProduct = await showDialog<ProductModel>(
+      context: context,
+      builder: (BuildContext context) {
+        String name = product.name;
+        num price = product.price;
+        String description = product.description;
+        String urlImg = product.urlImg;
+
+        return AlertDialog(
+          title: Text('Edit Product'),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFormField(
+                  initialValue: name,
+                  decoration: InputDecoration(labelText: 'Name'),
+                  onChanged: (value) => name = value,
+                ),
+                TextFormField(
+                  initialValue: price.toString(),
+                  decoration: InputDecoration(labelText: 'Price'),
+                  onChanged: (value) => price = num.parse(value),
+                ),
+                TextFormField(
+                  initialValue: description,
+                  decoration: InputDecoration(labelText: 'Description'),
+                  onChanged: (value) => description = value,
+                ),
+                TextFormField(
+                  initialValue: urlImg,
+                  decoration: InputDecoration(labelText: 'Image URL'),
+                  onChanged: (value) => urlImg = value,
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async {
+                // Save changes and update product
+                final updatedProduct = ProductModel(
+                  id: product.id,
+                  name: name,
+                  price: price.toDouble(),
+                  description: description,
+                  urlImg: urlImg,
+                );
+                try {
+                  await ProductService().updateProduct(
+                    updatedProduct.id,
+                    updatedProduct.name,
+                    updatedProduct.price,
+                    updatedProduct.description,
+                    updatedProduct.urlImg,
+                  );
+                  // Refresh product list
+                  setState(() {
+                    futureProducts = ProductService().fetchProducts();
+                  });
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text('Product updated successfully'),
+                  ));
+                } catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text('Failed to update product: $e'),
+                  ));
+                }
+                Navigator.of(context).pop(updatedProduct);
+              },
+              child: Text('Save'),
+            ),
+          ],
+        );
+      },
+    );
+
+    // Update the product list if the product was edited
+    if (editedProduct != null) {
+      // Call updateProduct method from ProductService
+    }
   }
 
   @override
