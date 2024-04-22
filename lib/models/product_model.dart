@@ -28,7 +28,7 @@ class UserProfileModel {
   final String firstName;
   final String lastName;
   final String email;
-  final String phone;
+  final int phone;
   final String largePictureUrl;
 
   UserProfileModel({
@@ -44,8 +44,8 @@ class UserProfileModel {
     final picture = json['picture'];
 
     return UserProfileModel(
-      firstName: name['first'],
-      lastName: name['last'],
+      firstName: name['name'],
+      lastName: name['lastname'],
       email: json['email'],
       phone: json['phone'],
       largePictureUrl: picture['large'],

@@ -4,7 +4,6 @@ import 'package:movil_project/pages/carrito.dart';
 import 'package:movil_project/pages/favorite.dart';
 import 'package:movil_project/pages/home_page.dart';
 import 'package:movil_project/services/product_service.dart'; // Importa el servicio para obtener el perfil del usuario
-import 'package:movil_project/models/product_model.dart'; // Importa el modelo de perfil de usuario
 
 class Perfil extends StatefulWidget {
   @override
@@ -12,7 +11,7 @@ class Perfil extends StatefulWidget {
 }
 
 class _PerfilState extends State<Perfil> {
-  late Future<UserProfileModel> futureUserProfile;
+  late Future<Map<String, dynamic>> futureUserProfile;
   int _selectedIndex = 0;
   bool _showAddProductModal = false;
   bool _showAddOfferModal = false;
@@ -26,7 +25,7 @@ class _PerfilState extends State<Perfil> {
   @override
   void initState() {
     super.initState();
-    futureUserProfile = ProductService().fetchUserProfile(); // Llama a la función para obtener el perfil del usuario
+    futureUserProfile = ProductService().fetchUserProfile();
   }
 
   void _showAddProductModalBottomSheet() {
@@ -252,7 +251,7 @@ class _PerfilState extends State<Perfil> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: FutureBuilder<UserProfileModel>(
+        child: FutureBuilder<Map<String, dynamic>>(
           future: futureUserProfile,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -260,7 +259,7 @@ class _PerfilState extends State<Perfil> {
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else if (snapshot.hasData) {
-              final userProfile = snapshot.data!;
+              final userData = snapshot.data!;
 
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -271,19 +270,21 @@ class _PerfilState extends State<Perfil> {
                     style: TextStyle(fontSize: 28),
                   ),
                   Text(
-                    'Welcome, ${userProfile.firstName}',
+                    'Welcome, ${userData['name']}',
                     style: TextStyle(fontSize: 28),
                   ),
                   SizedBox(height: 20),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Name: ${userProfile.firstName} ${userProfile.lastName}'),
+                      Text('Name: ${userData['name']} ${userData['lastname']}'),
                       SizedBox(height: 20),
-                      Text('E-mail: ${userProfile.email}'),
+                      Text('E-mail: ${userData['email']}'),
                       SizedBox(height: 20),
-                      Text('Phone: ${userProfile.phone}'),
+                      Text('Phone: ${userData['phone']}'),
                       SizedBox(height: 20),
+                      Text('Birthday: ${userData['birthday']}'),
+                      SizedBox(height: 20,)
                       // Aquí puedes mostrar los demás datos del perfil
                     ],
                   ),

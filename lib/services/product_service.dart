@@ -36,21 +36,19 @@ class ProductService {
     }
   }
 
-  Future<UserProfileModel> fetchUserProfile() async {
-    final response = await http.get(Uri.parse('https://randomuser.me/api/'));
+  Future<Map<String, dynamic>> fetchUserProfile() async {
+    final response = await http.get(Uri.parse('https://8vfbfqxf-3006.use2.devtunnels.ms/api/v1/user/64640'));
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = jsonDecode(response.body);
 
-      final List<dynamic> results = responseData['results'];
-      final userProfileJson = results.first;
+      final Map<String, dynamic> userData = responseData['data']['message'];
 
-      return UserProfileModel.fromJson(userProfileJson);
+      return userData;
     } else {
       throw Exception('Failed to load user profile: ${response.reasonPhrase}');
     }
   }
-
 
   Future<ProductModel> fetchProduct(String uuid) async {
     final response = await http.get(Uri.parse('https://shark-app-o8v24.ondigitalocean.app/api/v1/product/$uuid'));
@@ -84,10 +82,8 @@ class ProductService {
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = jsonDecode(response.body);
 
-      // Accede a la lista de ofertas dentro de "data"
       final List<dynamic> offerList = responseData['data']['list'];
 
-      // Convierte la lista de ofertas a una lista de Map<String, dynamic>
       return offerList.cast<Map<String, dynamic>>();
     } else {
       throw Exception('Failed to fetch offers: ${response.reasonPhrase}');
@@ -95,13 +91,13 @@ class ProductService {
   }
 
   Future<void> addUser(String name, String lastname, String phone, String email, String birthday, String password) async {
-    final url = Uri.parse('https://seashell-app-i484t.ondigitalocean.app/api/v1/user/create-user');
+    final url = Uri.parse('https://8vfbfqxf-3006.use2.devtunnels.ms/api/v1/user/create-user');
 
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
-        'id': Random().nextInt(100000), // Genera un ID único para el usuario
+        'id': Random().nextInt(100000),
         'name': name,
         'lastname': lastname,
         'phone': phone,
