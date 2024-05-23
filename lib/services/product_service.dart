@@ -181,6 +181,28 @@ class ProductService {
     }
   }
 
+  Future<void> updateOffer(String offerId, String name, num price, String description, String discount, String availability) async {
+    final url = Uri.parse('https://8vfbfqxf-3006.use2.devtunnels.ms/api/v1/offer/update/$offerId');
+
+    final response = await http.put(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'title': name,
+        'description': description,
+        'price': price,
+        'discount': discount,
+        'availability': availability,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      print('Offer updated successfully');
+    } else {
+      throw Exception('Failed to update offer: ${response.reasonPhrase}');
+    }
+  }
+
   Future<void> deleteOffer(String offerId) async {
     final url = Uri.parse('https://8vfbfqxf-3006.use2.devtunnels.ms/api/v1/offer/delete/$offerId');
 
@@ -195,5 +217,4 @@ class ProductService {
       throw Exception('Failed to delete offer: ${response.reasonPhrase}');
     }
   }
-
 }

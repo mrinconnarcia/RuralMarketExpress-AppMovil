@@ -33,6 +33,9 @@ class _OfertasPageState extends State<OfertasPage> {
               onPressed: () async {
                 try {
                   await ProductService().deleteOffer(offerId);
+                  setState(() {
+                    futureOffers = ProductService().fetchOffers();
+                  });
                   Navigator.of(context).pop();
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -48,6 +51,124 @@ class _OfertasPageState extends State<OfertasPage> {
                 }
               },
               child: Text('Yes'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showUpdateOfferDialog(BuildContext context, Map<String, dynamic> offer) {
+    final _formKey = GlobalKey<FormState>();
+    final TextEditingController nameController = TextEditingController(text: offer['title']);
+    final TextEditingController priceController = TextEditingController(text: offer['price'].toString());
+    final TextEditingController descriptionController = TextEditingController(text: offer['description']);
+    final TextEditingController discountController = TextEditingController(text: offer['discount'].toString());
+    final TextEditingController availabilityController = TextEditingController(text: offer['availability']);
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Update offer'),
+          content: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFormField(
+                  controller: nameController,
+                  decoration: InputDecoration(labelText: 'Title'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a title';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  controller: priceController,
+                  decoration: InputDecoration(labelText: 'Price'),
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a price';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  controller: descriptionController,
+                  decoration: InputDecoration(labelText: 'Description'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a description';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  controller: discountController,
+                  decoration: InputDecoration(labelText: 'Discount'),
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a discount';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  controller: availabilityController,
+                  decoration: InputDecoration(labelText: 'Availability'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter availability';
+                    }
+                    return null;
+                  },
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async {
+                if (_formKey.currentState!.validate()) {
+                  try {
+                    await ProductService().updateOffer(
+                      offer['id'].toString(),
+                      nameController.text,
+                      double.parse(priceController.text),
+                      descriptionController.text,
+                      discountController.text,
+                      availabilityController.text,
+                    );
+                    setState(() {
+                      futureOffers = ProductService().fetchOffers();
+                    });
+                    Navigator.of(context).pop();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Offer updated successfully'),
+                      ),
+                    );
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Error when updating the offer: $e'),
+                      ),
+                    );
+                  }
+                }
+              },
+              child: Text('Update'),
             ),
           ],
         );
@@ -134,11 +255,22 @@ class _OfertasPageState extends State<OfertasPage> {
                                 ),
                               ),
                               SizedBox(height: 8.0),
-                              ElevatedButton(
-                                onPressed: () {
-                                  _showDeleteConfirmationDialog(context, offer['id'].toString());
-                                },
-                                child: Text('Eliminar oferta'),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      _showDeleteConfirmationDialog(context, offer['id'].toString());
+                                    },
+                                    child: Text('Eliminar oferta'),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      _showUpdateOfferDialog(context, offer);
+                                    },
+                                    child: Text('Actualizar oferta'),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
